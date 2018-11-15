@@ -1,0 +1,21 @@
+/* AR  11-14-2018*/
+SELECT 
+            s.school_name,
+            s.last_name as "Student_Last_Name",
+            s.first_name "Student_First_Name",
+            sjp.student_id,
+            s.grade_level,
+            p.last_name as "Contact_Last_Name",
+            p.first_name "Contact_First_Name",
+            pjc.title,
+            pjc.value, 
+            sjp.student_relation
+ 
+                         
+FROM 
+            people_join_contacts AS pjc
+            LEFT JOIN people AS p ON p.person_id = pjc.person_id
+            LEFT JOIN students_join_people AS sjp ON sjp.person_id = pjc.person_id
+            LEFT JOIN vw_polk_students_active_enrollments AS s ON s.student_id = sjp.student_id
+WHERE 
+            regexp_replace(value, '[^a-zA-Z0-9]+', '', 'g') = regexp_replace('{PHONE_NUMBER}', '[^a-zA-Z0-9]+', '', 'g');
